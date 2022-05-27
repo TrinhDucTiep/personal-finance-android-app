@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">My_Budget</string>
+    <string name="action_spend">Sổ chi tiêu</string>
+    <string name="action_analyze">Phân tích</string>
+    <string name="action_schedule">Kế hoạch</string>
+    <string name="action_account">Tài khoản</string>
+
+    <string-array name="items">
+        <item>Chọn nhóm</item>
+        <item>Ăn uống</item>
+        <item>Di chuyển</item>
+        <item>Thuê nhà</item>
+        <item>Hóa đơn nước</item>
+        <item>Hóa đơn điện</item>
+        <item>Hóa đơn internet</item>
+
+    </string-array>
+    <string-array name="moneyIn">
+        <item>Lương</item>
+        <item>Khác</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>
