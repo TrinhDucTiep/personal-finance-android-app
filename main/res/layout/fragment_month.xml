@@ -6,15 +6,42 @@
     android:orientation="vertical"
     tools:context=".timeFragment.today">
 
-    <TextView
-        android:id="@+id/m_budgetAmountTextView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:text="Số dư: 0 đ"
-        android:textColor="@color/black"
-        android:textSize="25sp"
-        android:textStyle="bold" />
+        android:orientation="vertical"
+        android:background="#aab3ac"
+        android:padding="3dp">
+
+        <TextView
+            android:id="@+id/m_moneyIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:text="Thu nhập: 0 đ"
+            android:textColor="#1aad37"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/m_moneyOut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:text="Chi tiêu:    0 đ"
+            android:textColor="#d11541"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/m_budgetAmountTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:text="Số dư:       0 đ"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"

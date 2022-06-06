@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2a9141"
-    android:padding="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:padding="0dp"
+    android:orientation="vertical"
     tools:context=".fragment.SpendFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/time_tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabIndicatorColor="@color/teal_700"
+        app:tabSelectedTextColor="@color/teal_700"/>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/analyze_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Spend fragment"
-        android:textColor="@color/white"/>
+        android:layout_below="@+id/time_tab_layout"/>
 
-</FrameLayout>
+</RelativeLayout>

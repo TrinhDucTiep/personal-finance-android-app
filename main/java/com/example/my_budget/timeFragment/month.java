@@ -41,7 +41,7 @@ import java.util.Calendar;
 
 public class month extends Fragment {
 
-    private TextView budgetAmountTextView;
+    private TextView budgetAmountTextView, moneyInTextView, moneyOutTextView;
     private RecyclerView recyclerView;
 
     private FirebaseAuth mAuth;
@@ -64,6 +64,8 @@ public class month extends Fragment {
         View view = inflater.inflate(R.layout.fragment_month, container, false);
 
         budgetAmountTextView = view.findViewById(R.id.m_budgetAmountTextView);
+        moneyInTextView = view.findViewById(R.id.m_moneyIn);
+        moneyOutTextView = view.findViewById(R.id.m_moneyOut);
         recyclerView = view.findViewById(R.id.m_recyclerview);
         mAuth = FirebaseAuth.getInstance();
         budgetRef = FirebaseDatabase.getInstance().getReference().child("budget").child(mAuth.getCurrentUser().getUid());
@@ -85,13 +87,25 @@ public class month extends Fragment {
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int moneyIn=0, moneyOut=0;
                 int totalAmount = 0;
 
                 for(DataSnapshot snap : snapshot.getChildren()){
                     Data data = snap.getValue(Data.class);
-                    totalAmount -= data.getAmount();
-                    String strTotal = String.valueOf("Số dư: " + totalAmount + " đ");
+                    if(data.getItem().equals("Lương") || data.getItem().equals("Tiền thưởng") || data.getItem().equals("Trợ cấp") || data.getItem().equals("Thu nhập khác")){
+                        moneyIn+=data.getAmount();
+                        String strMoneyIn = String.valueOf("Thu nhập: " + moneyIn + " đ");
+                        moneyInTextView.setText(strMoneyIn);
+                    }else {
+                        moneyOut+=data.getAmount();
+                        String strMoneyOut = String.valueOf("Chi tiêu:    " + moneyOut + " đ");
+                        moneyOutTextView.setText(strMoneyOut);
+                    }
+
+                    totalAmount = moneyIn - moneyOut;
+                    String strTotal = String.valueOf("Số dư:       " + totalAmount + " đ");
                     budgetAmountTextView.setText(strTotal);
+
                 }
             }
 
@@ -144,6 +158,39 @@ public class month extends Fragment {
                         break;
                     case "Thuê nhà":
                         holder.imageView.setImageResource(R.drawable.ic_house);
+                        break;
+                    case "Vật nuôi":
+                        holder.imageView.setImageResource(R.drawable.ic_animal);
+                        break;
+                    case "Mua sắm":
+                        holder.imageView.setImageResource(R.drawable.ic_shopping);
+                        break;
+                    case "Giáo dục":
+                        holder.imageView.setImageResource(R.drawable.ic_education);
+                        break;
+                    case "Sức khỏe":
+                        holder.imageView.setImageResource(R.drawable.ic_health);
+                        break;
+                    case "Làm đẹp":
+                        holder.imageView.setImageResource(R.drawable.ic_beauty);
+                        break;
+                    case "Giải trí":
+                        holder.imageView.setImageResource(R.drawable.ic_entertainment);
+                        break;
+                    case "Chi tiêu khác":
+                        holder.imageView.setImageResource(R.drawable.ic_other);
+                        break;
+                    case "Lương":
+                        holder.imageView.setImageResource(R.drawable.ic_salary);
+                        break;
+                    case "Tiền thưởng":
+                        holder.imageView.setImageResource(R.drawable.ic_bonus);
+                        break;
+                    case "Trợ cấp":
+                        holder.imageView.setImageResource(R.drawable.ic_parents);
+                        break;
+                    case "Thu nhập khác":
+                        holder.imageView.setImageResource(R.drawable.ic_other_money_in);
                         break;
                 }
 

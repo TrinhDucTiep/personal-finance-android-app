@@ -6,7 +6,8 @@
     <string name="action_account">Tài khoản</string>
 
     <string-array name="items">
-        <item>Chọn nhóm</item>
+        <item>CHỌN NHÓM</item>
+        <item>---CHI TIÊU---</item>
         <item>Ăn uống</item>
         <item>Di chuyển</item>
         <item>Thuê nhà</item>
@@ -14,13 +15,19 @@
         <item>Hóa đơn điện</item>
         <item>Hóa đơn internet</item>
 
-    </string-array>
-    <string-array name="moneyIn">
-        <item>Lương</item>
-        <item>Khác</item>
-    </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+        <item>Vật nuôi</item>
+        <item>Mua sắm</item>
+        <item>Giáo dục</item>
+        <item>Sức khỏe</item>
+        <item>Làm đẹp</item>
+        <item>Giải trí</item>
+        <item>Chi tiêu khác</item>
 
+        <item>---THU NHẬP---</item>
+        <item>Lương</item>
+        <item>Tiền thưởng</item>
+        <item>Trợ cấp</item>
+        <item>Thu nhập khác</item>
+    </string-array>
 
 </resources>

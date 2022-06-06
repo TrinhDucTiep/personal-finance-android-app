@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                     amount.setError("Bạn chưa nhập số tiền");
                     return;
                 }
-                if(budgetItem.equals("Chọn nhóm")){
+                if(budgetItem.equals("CHỌN NHÓM") || budgetItem.equals("---CHI TIÊU---") || budgetItem.equals("---THU NHẬP---")){
                     Toast.makeText(MainActivity.this, "Hãy chọn một nhóm", Toast.LENGTH_SHORT).show();
                 }
                 else{
