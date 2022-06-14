@@ -2,7 +2,6 @@ package com.example.my_budget.fragment;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -10,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.my_budget.R;
-import com.example.my_budget.timeFragment.TimeViewpagerAdapter;
+import com.example.my_budget.spendFragment.TimeViewpagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 

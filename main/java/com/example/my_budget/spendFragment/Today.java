@@ -1,10 +1,13 @@
-package com.example.my_budget.fragment;
+package com.example.my_budget.spendFragment;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.app.AlertDialog;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -12,11 +15,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.my_budget.DataSchedule;
+import com.example.my_budget.Data;
 import com.example.my_budget.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -30,19 +32,25 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import org.joda.time.DateTime;
+import org.joda.time.Months;
+import org.joda.time.MutableDateTime;
+import org.joda.time.Weeks;
+
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class ScheduleFragment extends Fragment {
+public class Today extends Fragment {
 
-    private TextView giveTxt, getTxt;
+    private TextView budgetAmountTextView, moneyInTextView, moneyOutTextView;
     private RecyclerView recyclerView;
 
     private FirebaseAuth mAuth;
-    private DatabaseReference scheduleRef;
+    private DatabaseReference budgetRef;
 
+    //argument for update and delete
     private String postKey = "";
     private String item = "";
     private int amount = 0;
@@ -50,45 +58,56 @@ public class ScheduleFragment extends Fragment {
     private String dateToday = "";
     private DecimalFormat formatter = new DecimalFormat("###,###,###");
 
-    public ScheduleFragment() {
+    public Today() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View mView = inflater.inflate(R.layout.fragment_schedule, container, false);
+        View view = inflater.inflate(R.layout.fragment_today, container, false);
 
-        giveTxt = mView.findViewById(R.id.give_txt);
-        getTxt = mView.findViewById(R.id.get_txt);
-        recyclerView = mView.findViewById(R.id.recyclerview_schedule);
+        budgetAmountTextView = view.findViewById(R.id.td_budgetAmountTextView);
+        moneyInTextView = view.findViewById(R.id.td_moneyIn);
+        moneyOutTextView = view.findViewById(R.id.td_moneyOut);
+        recyclerView = view.findViewById(R.id.td_recyclerview);
         mAuth = FirebaseAuth.getInstance();
-        scheduleRef = FirebaseDatabase.getInstance().getReference().child("schedule").child(mAuth.getCurrentUser().getUid());
+        budgetRef = FirebaseDatabase.getInstance().getReference().child("budget").child(mAuth.getCurrentUser().getUid());
 
-        Query query = scheduleRef;
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Calendar calendar = Calendar.getInstance();
+        dateToday = dateFormat.format(calendar.getTime());
+        Query query = budgetRef.orderByChild("date").equalTo(dateToday);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+
         linearLayoutManager.setStackFromEnd(true);
         linearLayoutManager.setReverseLayout(true);
-
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int giveMoney=0, getMoney=0;
+                int moneyIn=0, moneyOut=0;
+                int totalAmount = 0;
+
                 for(DataSnapshot snap : snapshot.getChildren()){
-                    DataSchedule dataSchedule = snap.getValue(DataSchedule.class);
-                    if(dataSchedule.getItem().equals("Cho vay")){
-                        giveMoney += dataSchedule.getAmount();
-                        String strGiveMoney = String.valueOf(formatter.format(giveMoney) + " đ");
-                        giveTxt.setText(strGiveMoney);
+                    Data data = snap.getValue(Data.class);
+                    if(data.getItem().equals("Lương") || data.getItem().equals("Tiền thưởng") || data.getItem().equals("Trợ cấp") || data.getItem().equals("Thu nhập khác")){
+                        moneyIn+=data.getAmount();
+                        String strMoneyIn = String.valueOf(formatter.format(moneyIn)  + " đ");
+                        moneyInTextView.setText(strMoneyIn);
                     }else {
-                        getMoney += dataSchedule.getAmount();
-                        String strGetMoney = String.valueOf(formatter.format(getMoney) + " đ");
-                        getTxt.setText(strGetMoney);
+                        moneyOut+=data.getAmount();
+                        String strMoneyOut = String.valueOf(formatter.format(moneyOut)  + " đ");
+                        moneyOutTextView.setText(strMoneyOut);
                     }
+
+                    totalAmount = moneyIn - moneyOut;
+                    String strTotal = String.valueOf(formatter.format(totalAmount)  + " đ");
+                    budgetAmountTextView.setText(strTotal);
                 }
             }
 
@@ -98,7 +117,7 @@ public class ScheduleFragment extends Fragment {
             }
         });
 
-        return mView;
+        return view;
     }
 
     @Override
@@ -108,29 +127,76 @@ public class ScheduleFragment extends Fragment {
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Calendar calendar = Calendar.getInstance();
         dateToday = dateFormat.format(calendar.getTime());
-        Query query = scheduleRef;
+        Query query = budgetRef.orderByChild("date").equalTo(dateToday);
 
-        FirebaseRecyclerOptions<DataSchedule> options = new FirebaseRecyclerOptions.Builder<DataSchedule>()
-                .setQuery(query, DataSchedule.class)
+        FirebaseRecyclerOptions<Data> options = new FirebaseRecyclerOptions.Builder<Data>()
+                .setQuery(query, Data.class)
                 .build();
 
-        FirebaseRecyclerAdapter<DataSchedule, ScheduleFragment.MyViewHolder> adapter = new FirebaseRecyclerAdapter<DataSchedule, ScheduleFragment.MyViewHolder>(options) {
+        FirebaseRecyclerAdapter<Data, MyViewHolder> adapter = new FirebaseRecyclerAdapter<Data, MyViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull ScheduleFragment.MyViewHolder holder, int position, @NonNull DataSchedule model) {
-                holder.setItemAmount(formatter.format(model.getAmount()) + " đ");
-                holder.setDate(model.getDate());
-                holder.setItemName(model.getItem());
-                holder.setNotes(model.getNote());
+            protected void onBindViewHolder(@NonNull MyViewHolder holder, int position, @NonNull Data model) {
+             //   if(!model.getItem().equals("Cho vay") && !model.getItem().equals("Nợ")){
+                    holder.setItemAmount(formatter.format(model.getAmount()) + " đ");
+                    holder.setDate(model.getDate());
+                    holder.setItemName(model.getItem());
+                    holder.setNotes(model.getNotes());
 
+                    switch (model.getItem()){
+                        case "Ăn uống":
+                            holder.imageView.setImageResource(R.drawable.ic_food);
+                            break;
+                        case "Di chuyển":
+                            holder.imageView.setImageResource(R.drawable.ic_transport);
+                            break;
+                        case "Hóa đơn điện":
+                            holder.imageView.setImageResource(R.drawable.ic_electric);
+                            break;
+                        case "Hóa đơn internet":
+                            holder.imageView.setImageResource(R.drawable.ic_internet);
+                            break;
+                        case "Hóa đơn nước":
+                            holder.imageView.setImageResource(R.drawable.ic_water);
+                            break;
+                        case "Thuê nhà":
+                            holder.imageView.setImageResource(R.drawable.ic_house);
+                            break;
+                        case "Vật nuôi":
+                            holder.imageView.setImageResource(R.drawable.ic_animal);
+                            break;
+                        case "Mua sắm":
+                            holder.imageView.setImageResource(R.drawable.ic_shopping);
+                            break;
+                        case "Giáo dục":
+                            holder.imageView.setImageResource(R.drawable.ic_education);
+                            break;
+                        case "Sức khỏe":
+                            holder.imageView.setImageResource(R.drawable.ic_health);
+                            break;
+                        case "Làm đẹp":
+                            holder.imageView.setImageResource(R.drawable.ic_beauty);
+                            break;
+                        case "Giải trí":
+                            holder.imageView.setImageResource(R.drawable.ic_entertainment);
+                            break;
+                        case "Chi tiêu khác":
+                            holder.imageView.setImageResource(R.drawable.ic_other);
+                            break;
+                        case "Lương":
+                            holder.imageView.setImageResource(R.drawable.ic_salary);
+                            break;
+                        case "Tiền thưởng":
+                            holder.imageView.setImageResource(R.drawable.ic_bonus);
+                            break;
+                        case "Trợ cấp":
+                            holder.imageView.setImageResource(R.drawable.ic_parents);
+                            break;
+                        case "Thu nhập khác":
+                            holder.imageView.setImageResource(R.drawable.ic_other_money_in);
+                            break;
+                    }
+               // }
 
-                switch (model.getItem()){
-                    case "Cho vay":
-                        holder.imageView.setImageResource(R.drawable.ic_give);
-                        break;
-                    case "Nợ":
-                        holder.imageView.setImageResource(R.drawable.ic_get);
-                        break;
-                }
 
                 // update and delete
                 holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -139,7 +205,7 @@ public class ScheduleFragment extends Fragment {
                         postKey = getRef(holder.getBindingAdapterPosition()).getKey();
                         item = model.getItem();
                         amount = model.getAmount();
-                        note = model.getNote();
+                        note = model.getNotes();
 
                         update();
                     }
@@ -148,9 +214,9 @@ public class ScheduleFragment extends Fragment {
 
             @NonNull
             @Override
-            public ScheduleFragment.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.retrieve_layout, parent, false);
-                return new ScheduleFragment.MyViewHolder(view);
+                return new MyViewHolder(view);
             }
         };
 
@@ -205,8 +271,10 @@ public class ScheduleFragment extends Fragment {
         final EditText mAmount = mView.findViewById(R.id.udAmount);
         final EditText mNote = mView.findViewById(R.id.udNote);
 
-        mNote.setText(note);
+//        mNote.setVisibility(View.GONE);
 
+        mNote.setText(note);
+//        mNote.setSelection(note.length()); bị null
         mItem.setText(item);
         mAmount.setText(String.valueOf(amount));
         mAmount.setSelection(String.valueOf(amount).length());
@@ -223,8 +291,14 @@ public class ScheduleFragment extends Fragment {
                 Calendar calendar = Calendar.getInstance();
                 String date = dateFormat.format(calendar.getTime());
 
-                DataSchedule dataSchedule = new DataSchedule(item, date, postKey, note, amount);
-                scheduleRef.child(postKey).setValue(dataSchedule).addOnCompleteListener(new OnCompleteListener<Void>() {
+                MutableDateTime epouch = new MutableDateTime();
+                epouch.setDate(0);
+                DateTime now = new DateTime();
+                Weeks weeks = Weeks.weeksBetween(epouch, now);
+                Months months = Months.monthsBetween(epouch, now);
+
+                Data data = new Data(item, date, postKey, note, amount, weeks.getWeeks(), months.getMonths());
+                budgetRef.child(postKey).setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
@@ -241,7 +315,7 @@ public class ScheduleFragment extends Fragment {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scheduleRef.child(postKey).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                budgetRef.child(postKey).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
@@ -259,3 +333,5 @@ public class ScheduleFragment extends Fragment {
     }
 
 }
+
+

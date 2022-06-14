@@ -28,6 +28,10 @@
         <item>Tiền thưởng</item>
         <item>Trợ cấp</item>
         <item>Thu nhập khác</item>
+
+        <item>---VAY/NỢ---</item>
+        <item>Cho vay</item>
+        <item>Nợ</item>
     </string-array>
 
 </resources>

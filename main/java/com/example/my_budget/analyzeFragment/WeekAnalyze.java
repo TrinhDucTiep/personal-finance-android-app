@@ -28,10 +28,7 @@ import org.joda.time.DateTime;
 import org.joda.time.MutableDateTime;
 import org.joda.time.Weeks;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class WeekAnalyze extends Fragment {
 
@@ -127,19 +124,19 @@ public class WeekAnalyze extends Fragment {
                 else { res+=totalElectric; }
                 if((float)totalInternet/sum >= 0.05) numbers.add(new PieEntry(totalInternet, "Hóa đơn internet"));
                 else { res+=totalInternet; }
-                if((float)totalAnimal/sum >= 0.05) numbers.add(new PieEntry(totalInternet, "Vật nuôi"));
+                if((float)totalAnimal/sum >= 0.05) numbers.add(new PieEntry(totalAnimal, "Vật nuôi"));
                 else { res+=totalAnimal; }
-                if((float)totalShopping/sum >= 0.05) numbers.add(new PieEntry(totalInternet, "Mua sắm"));
+                if((float)totalShopping/sum >= 0.05) numbers.add(new PieEntry(totalShopping, "Mua sắm"));
                 else { res+=totalShopping; }
-                if((float)totalEdu/sum >= 0.05) numbers.add(new PieEntry(totalInternet, "Giáo dục"));
+                if((float)totalEdu/sum >= 0.05) numbers.add(new PieEntry(totalEdu, "Giáo dục"));
                 else { res+=totalEdu; }
-                if((float)totalHealth/sum >= 0.05) numbers.add(new PieEntry(totalInternet, "Sức khỏe"));
+                if((float)totalHealth/sum >= 0.05) numbers.add(new PieEntry(totalHealth, "Sức khỏe"));
                 else { res+=totalHealth; }
-                if((float)totalBeauty/sum >= 0.05) numbers.add(new PieEntry(totalInternet, "Làm đẹp"));
+                if((float)totalBeauty/sum >= 0.05) numbers.add(new PieEntry(totalBeauty, "Làm đẹp"));
                 else { res+=totalBeauty; }
-                if((float)totalEnt/sum >= 0.05) numbers.add(new PieEntry(totalInternet, "Giải trí"));
+                if((float)totalEnt/sum >= 0.05) numbers.add(new PieEntry(totalEnt, "Giải trí"));
                 else { res+=totalEnt; }
-                if((float)totalOther/sum >= 0.05) numbers.add(new PieEntry(totalInternet, "Chi tiêu khác"));
+                if((float)totalOther/sum >= 0.05) numbers.add(new PieEntry(totalOther, "Chi tiêu khác"));
                 else { res+=totalOther; }
                 if((float)res/sum >= 0.04) numbers.add(new PieEntry(res, "...     "));
 

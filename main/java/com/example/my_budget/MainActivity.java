@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton fab;
 
     private DatabaseReference budgetRef;
+    private DatabaseReference scheduleRef;
     private FirebaseAuth mAuth;
     private ProgressDialog loader;
 
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         budgetRef = FirebaseDatabase.getInstance().getReference().child("budget").child(mAuth.getCurrentUser().getUid());
+        scheduleRef = FirebaseDatabase.getInstance().getReference().child("schedule").child(mAuth.getCurrentUser().getUid());
         loader = new ProgressDialog(this);
 
         // bottom navigation
@@ -124,10 +126,10 @@ public class MainActivity extends AppCompatActivity {
                     amount.setError("Bạn chưa nhập số tiền");
                     return;
                 }
-                if(budgetItem.equals("CHỌN NHÓM") || budgetItem.equals("---CHI TIÊU---") || budgetItem.equals("---THU NHẬP---")){
+                if(budgetItem.equals("CHỌN NHÓM") || budgetItem.equals("---CHI TIÊU---") || budgetItem.equals("---THU NHẬP---") || budgetItem.equals("---VAY/NỢ---")){
                     Toast.makeText(MainActivity.this, "Hãy chọn một nhóm", Toast.LENGTH_SHORT).show();
                 }
-                else{
+                else if((!budgetItem.equals("Cho vay")) && (!(budgetItem.equals("Nợ")))) {
                     loader.setMessage("đang lưu");
                     loader.setCanceledOnTouchOutside(false);
                     loader.show();
@@ -145,6 +147,28 @@ public class MainActivity extends AppCompatActivity {
 
                     Data data = new Data(budgetItem, date, id, budgetNotes, Integer.parseInt(budgetAmount), weeks.getWeeks(),months.getMonths());
                     budgetRef.child(id).setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                Toast.makeText(MainActivity.this, "Lưu thành công", Toast.LENGTH_SHORT).show();
+                            } else{
+                                Toast.makeText(MainActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
+                            }
+                            loader.dismiss();
+                        }
+                    });
+                } else {
+                    loader.setMessage("đang lưu");
+                    loader.setCanceledOnTouchOutside(false);
+                    loader.show();
+
+                    String id = scheduleRef.push().getKey();
+                    DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                    Calendar calendar = Calendar.getInstance();
+                    String date = dateFormat.format(calendar.getTime());
+
+                    DataSchedule dataSchedule = new DataSchedule(budgetItem, date, id, budgetNotes, Integer.parseInt(budgetAmount));
+                    scheduleRef.child(id).setValue(dataSchedule).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()){
