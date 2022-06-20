@@ -291,7 +291,7 @@ public class Month extends Fragment {
                 MutableDateTime epouch = new MutableDateTime();
                 epouch.setDate(0);
                 DateTime now = new DateTime();
-                Weeks weeks = Weeks.weeksBetween(epouch, now);
+                Weeks weeks = Weeks.weeksBetween(epouch, now.minusDays(4));
                 months = Months.monthsBetween(epouch, now);
 
                 Data data = new Data(item, date, postKey, note, amount, weeks.getWeeks(), months.getMonths());

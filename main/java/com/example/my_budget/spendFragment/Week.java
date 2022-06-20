@@ -77,7 +77,7 @@ public class Week extends Fragment {
         MutableDateTime epouch = new MutableDateTime();
         epouch.setDate(0);
         DateTime now = new DateTime();
-        weeks = Weeks.weeksBetween(epouch, now);
+        weeks = Weeks.weeksBetween(epouch, now.minusDays(4));
         Query query = budgetRef.orderByChild("week").equalTo(weeks.getWeeks());
 
 
@@ -130,7 +130,7 @@ public class Week extends Fragment {
         MutableDateTime epouch = new MutableDateTime();
         epouch.setDate(0);
         DateTime now = new DateTime();
-        Weeks weeks = Weeks.weeksBetween(epouch, now);
+        Weeks weeks = Weeks.weeksBetween(epouch, now.minusDays(4));
         Query query = budgetRef.orderByChild("week").equalTo(weeks.getWeeks());
 
         FirebaseRecyclerOptions<Data> options = new FirebaseRecyclerOptions.Builder<Data>()
@@ -294,7 +294,7 @@ public class Week extends Fragment {
                 MutableDateTime epouch = new MutableDateTime();
                 epouch.setDate(0);
                 DateTime now = new DateTime();
-                weeks = Weeks.weeksBetween(epouch, now);
+                weeks = Weeks.weeksBetween(epouch, now.minusDays(4));
                 Months months = Months.monthsBetween(epouch, now);
 
                 Data data = new Data(item, date, postKey, note, amount, weeks.getWeeks(), months.getMonths());

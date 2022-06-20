@@ -56,7 +56,7 @@ public class WeekAnalyze extends Fragment {
         MutableDateTime epouch = new MutableDateTime();
         epouch.setDate(0);
         DateTime now = new DateTime();
-        Weeks weeks = Weeks.weeksBetween(epouch, now);
+        Weeks weeks = Weeks.weeksBetween(epouch, now.minusDays(4));
         Query query = budgetRef.orderByChild("week").equalTo(weeks.getWeeks());
 
         query.addValueEventListener(new ValueEventListener() {

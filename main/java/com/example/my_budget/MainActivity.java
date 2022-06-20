@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                     MutableDateTime epouch = new MutableDateTime();
                     epouch.setDate(0);
                     DateTime now = new DateTime();
-                    Weeks weeks = Weeks.weeksBetween(epouch, now);
+                    Weeks weeks = Weeks.weeksBetween(epouch, now.minusDays(4));
                     Months months = Months.monthsBetween(epouch, now);
 
                     Data data = new Data(budgetItem, date, id, budgetNotes, Integer.parseInt(budgetAmount), weeks.getWeeks(),months.getMonths());
