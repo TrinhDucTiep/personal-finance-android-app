@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".spendFragment.TodaySpend">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#cbcbd1"
+        android:padding="1.5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:text="Thu nhập: "
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/black"
+                android:textSize="25sp" />
+            <TextView
+                android:id="@+id/w_moneyIn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"
+                android:background="@color/white"
+                android:text="0 đ"
+                android:fontFamily="@font/open_sans"
+                android:textColor="#1aad37"
+                android:textSize="25sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:text="Chi tiêu: "
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/black"
+                android:textSize="25sp"/>
+            <TextView
+                android:id="@+id/w_moneyOut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:text="0 đ"
+                android:fontFamily="@font/open_sans"
+                android:textAlignment="viewEnd"
+                android:textColor="#d11541"
+                android:textSize="25sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".35"
+                android:background="@color/white"/>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="3dp"
+                android:layout_weight=".65"
+                android:background="#9ca19c"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:text="Số dư: "
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/black"
+                android:textSize="25sp"/>
+            <TextView
+                android:id="@+id/w_budgetAmountTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:textAlignment="viewEnd"
+                android:text="0 đ"
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/black"
+                android:textSize="25sp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:layout_marginBottom="50dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/w_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+</LinearLayout>

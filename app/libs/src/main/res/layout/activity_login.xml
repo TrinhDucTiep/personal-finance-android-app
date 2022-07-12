@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_margin="20dp"
+    tools:context=".system.LoginActivity">
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/logo"/>
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nhập Email..."
+        android:layout_margin="5dp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:inputType="textEmailAddress"
+        android:textColorHint="#7A7272"
+        />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Mật Khẩu"
+        android:layout_margin="5dp"
+        android:inputType="textPassword"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textColorHint="#7A7272"
+        />
+
+    <Button
+        android:id="@+id/loginBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:layout_margin="5dp"
+        android:text="Đăng nhập"
+        android:backgroundTint="#0c4a0b"/>
+
+    <TextView
+        android:id="@+id/forgot_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quên mật khẩu?"
+        android:padding="10dp"
+        android:textColor="#3268bf"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/loginQn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#0561f5"
+        android:padding="5dp"
+        android:text="Chưa có tài khoản? Đăng ký"
+        android:gravity="center"/>
+
+</LinearLayout>
